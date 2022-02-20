@@ -1,0 +1,13 @@
+computer#	Time in (seconds) the computer got infected  outside of the network
+0	200
+17	150
+20	600
+29	70
+45	122
+55	35
+72	52
+95	78
+39	870
+51	200
+87	800
+99	345

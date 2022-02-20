@@ -1,0 +1,4 @@
+computer#	Time in (seconds) the computer got infected  outside of the network
+5   0
+6   0
+3   0
