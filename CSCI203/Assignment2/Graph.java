@@ -25,16 +25,15 @@ public class Graph {
         map[label1].add(edge);
     }
 
-    public ArrayList<Node> DFSForInfected(int root,int time){
+    public ArrayList<Node> DFSForInfected(int root){
         Stack<Edge> stack = new Stack<>();
         stack.addAll(map[root]);
         while(stack.size() != 0){
             Edge curr = stack.pop();
-            if(curr.getConnectionTime() <= time){
-                Node n1 = nodes[curr.getN1().getLabel()];
-                Node n2 = nodes[curr.getN2().getLabel()];
-                infectEither(n1,n2, curr.getConnectionTime());
-            }
+            Node n1 = nodes[curr.getN1().getLabel()];
+            Node n2 = nodes[curr.getN2().getLabel()];
+            infectEither(n1,n2, curr.getConnectionTime());
+            if(n2.getInfectionTime() >= 0)
             stack.addAll(map[curr.getN2().getLabel()]);
         }
         ArrayList<Node> infectedNodes = new ArrayList<>();
@@ -50,20 +49,10 @@ public class Graph {
                 n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
             }
         }
-        else if(n2.getInfectionTime() >= 0 && n1.getInfectionTime() < 0){ //if n2 is infected and n1 isn't
-                if(connectionTime >= n2.getInfectionTime()){
-                    n1.setInfectionTime(connectionTime);
-                    n1.setInfectionSequence(n2.getInfectionSequence() + " " + n2.getLabel());
-                }
-        }
         else if(n1.getInfectionTime() >= 0 && n2.getInfectionTime() >= 0){ //if both are infected
             if(connectionTime >= n1.getInfectionTime() && connectionTime < n2.getInfectionTime()){
                 n2.setInfectionTime(connectionTime);
                 n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
-            }
-            else if(connectionTime >= n2.getInfectionTime() && connectionTime < n1.getInfectionTime()){
-                n1.setInfectionTime(connectionTime);
-                n1.setInfectionSequence(n2.getInfectionSequence() + " " + n2.getLabel());
             }
         }
 
