@@ -1,4 +1,3 @@
-import java.security.spec.EdDSAParameterSpec;
 import java.util.*;
 
 public class Graph {
@@ -29,10 +28,9 @@ public class Graph {
             Edge curr = stack.remove(0);
             Node n1 = nodes[curr.getN1().getLabel()];
             Node n2 = nodes[curr.getN2().getLabel()];
-            if((n1.getInfectionTime() >= 0 && n2.getInfectionTime() < 0) || n1.getLabel() == 100){
-                infect(n1,n2, curr.getConnectionTime());
+                if(infect(n1,n2, curr.getConnectionTime()))
                 stack.addAll(0,map[curr.getN2().getLabel()]);
-            }
+
         }
         ArrayList<Node> infectedNodes = new ArrayList<>();
         for(Node n : nodes)
@@ -40,12 +38,30 @@ public class Graph {
         return infectedNodes;
     }
 
-    private void infect(Node n1,Node n2,int connectionTime){
-        if(n1.getInfectionTime() >= 0 && n2.getInfectionTime() < 0){ //if n1 is infected and n2 isn't
-            if(connectionTime >= n1.getInfectionTime()){
-                n2.setInfectionTime(connectionTime);
-                n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
+    private boolean infect(Node n1,Node n2,int connectionTime){
+        if(n1.getLabel() == 100) return true;
+            if((n1.getInfectionTime() >= 0 && n2.getInfectionTime() < 0)){ //if top is infected and bottom isnt
+                if(n1.getInfectionTime() <= connectionTime){
+                    n2.setInfectionTime(connectionTime);
+                    n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
+                    return true;
+                }
             }
-        }
+            else if(n2.getInfectionTime() >= 0 && n1.getInfectionTime() >= 0){ // if both are infected
+                if(n1.getInfectionTime() <= connectionTime){ //if n1 can infect n2
+                    if(n2.getInfectionTime() > connectionTime){ // if n2 has more infection time than connection time
+                        n2.setInfectionTime(connectionTime);
+                        n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
+                        return true;
+                    }
+                    else if(n1.getInfectionTime() == connectionTime && n2.getInfectionSequence().split(" ").length
+                    > n1.getInfectionSequence().split(" ").length){ // if n2 infection time is same as connection, and it has more sequence
+                        n2.setInfectionTime(connectionTime);
+                        n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
+                        return true;
+                    }
+                }
+            }
+            return false;
     }
 }

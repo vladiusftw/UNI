@@ -34,7 +34,7 @@ public class Node implements Comparable<Node>{
     }
 
     public String toString(){
-        return label + "";
+        return label + ":" + infectionTime;
     }
 
     @Override
