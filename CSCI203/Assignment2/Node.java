@@ -1,4 +1,4 @@
-public class Node {
+public class Node implements Comparable<Node>{
     private int label;
     private int infectionTime;
     private String infectionSequence;
@@ -35,5 +35,10 @@ public class Node {
 
     public String toString(){
         return label + "";
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return Integer.compare(infectionTime,o.infectionTime);
     }
 }
