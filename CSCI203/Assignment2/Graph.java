@@ -1,7 +1,5 @@
 import java.security.spec.EdDSAParameterSpec;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 
 public class Graph {
     private ArrayList<Edge>[] map;
@@ -26,15 +24,15 @@ public class Graph {
     }
 
     public ArrayList<Node> DFSForInfected(int root){
-        Stack<Edge> stack = new Stack<>();
-        stack.addAll(map[root]);
+        ArrayList<Edge> stack = new ArrayList<>(map[root]);
         while(stack.size() != 0){
-            Edge curr = stack.pop();
+            Edge curr = stack.remove(0);
             Node n1 = nodes[curr.getN1().getLabel()];
             Node n2 = nodes[curr.getN2().getLabel()];
-            infectEither(n1,n2, curr.getConnectionTime());
-            if(n2.getInfectionTime() >= 0)
-            stack.addAll(map[curr.getN2().getLabel()]);
+            if((n1.getInfectionTime() >= 0 && n2.getInfectionTime() < 0) || n1.getLabel() == 100){
+                infect(n1,n2, curr.getConnectionTime());
+                stack.addAll(0,map[curr.getN2().getLabel()]);
+            }
         }
         ArrayList<Node> infectedNodes = new ArrayList<>();
         for(Node n : nodes)
@@ -42,19 +40,12 @@ public class Graph {
         return infectedNodes;
     }
 
-    private void infectEither(Node n1,Node n2,int connectionTime){
+    private void infect(Node n1,Node n2,int connectionTime){
         if(n1.getInfectionTime() >= 0 && n2.getInfectionTime() < 0){ //if n1 is infected and n2 isn't
             if(connectionTime >= n1.getInfectionTime()){
                 n2.setInfectionTime(connectionTime);
                 n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
             }
         }
-        else if(n1.getInfectionTime() >= 0 && n2.getInfectionTime() >= 0){ //if both are infected
-            if(connectionTime >= n1.getInfectionTime() && connectionTime < n2.getInfectionTime()){
-                n2.setInfectionTime(connectionTime);
-                n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
-            }
-        }
-
     }
 }

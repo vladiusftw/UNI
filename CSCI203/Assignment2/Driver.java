@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Driver {
@@ -11,19 +12,24 @@ public class Driver {
         Scanner dataSetScanner = new Scanner(new File("src/TestCases/dataset.txt"));
         infectedScanner.nextLine();
         dataSetScanner.nextLine();
-        
+
         System.out.println("Enter time to find infected computers: (-1 to exit)");
         int time = scan.nextInt();
         long start = System.currentTimeMillis();
         Graph graph = new Graph(100);
+        ArrayList<Node> infected = new ArrayList<>();
         while(infectedScanner.hasNextInt()){
             int label = infectedScanner.nextInt();
             int infectionTime = infectedScanner.nextInt();
             if(infectionTime <= time){
-                graph.getNodeByLabel(label).setInfectionTime(infectionTime);
-                graph.addEdge(100,label,infectionTime);
+                Node temp =  graph.getNodeByLabel(label);
+                temp.setInfectionTime(infectionTime);
+                infected.add(temp);
             }
         }
+
+        Collections.sort(infected);
+        for(Node n : infected)  graph.addEdge(100,n.getLabel(),n.getInfectionTime());
 
         while(dataSetScanner.hasNextInt()){
             int l1 = dataSetScanner.nextInt();
