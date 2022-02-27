@@ -10,8 +10,8 @@ import java.util.Scanner;
 public class Driver {
     public static void main(String[] args) throws IOException {
         Scanner scan = new Scanner(System.in);
-        Scanner infectedScanner = new Scanner(new File("src/TestCases/infectedTable.txt"));
-        Scanner dataSetScanner = new Scanner(new File("src/TestCases/table.txt"));
+        Scanner infectedScanner = new Scanner(new File("src/TestCases/infected.txt"));
+        Scanner dataSetScanner = new Scanner(new File("src/TestCases/dataset.txt"));
         infectedScanner.nextLine();
         dataSetScanner.nextLine();
 
