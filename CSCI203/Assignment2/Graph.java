@@ -54,7 +54,7 @@ public class Graph {
                         n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
                         return true;
                     }
-                    else if(n1.getInfectionTime() == connectionTime && n2.getInfectionSequence().split(" ").length
+                    else if(n2.getInfectionTime() == connectionTime && n2.getInfectionSequence().split(" ").length
                     > n1.getInfectionSequence().split(" ").length){ // if n2 infection time is same as connection, and it has more sequence
                         n2.setInfectionTime(connectionTime);
                         n2.setInfectionSequence(n1.getInfectionSequence() + " " + n1.getLabel());
